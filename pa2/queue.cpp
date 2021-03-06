@@ -12,9 +12,7 @@
 template <class T>
 void Queue<T>::enqueue(T newItem)
 {
-    /**
-     * @todo Your code here!
-     */
+    myQueue.pushR(newItem);
 }
 
 /**
@@ -26,12 +24,32 @@ void Queue<T>::enqueue(T newItem)
 template <class T>
 T Queue<T>::dequeue()
 {
-    /**
-     * @todo Your code here! 
-     */
-
+    return myQueue.popL();
 }
 
+
+/**
+ * Finds the object at the front of the Queue, and returns it to the
+ * caller. Unlike dequeue(), this operation does not alter the queue.
+ *
+ * @return The item at the front of the queue.
+ */
+template <class T>
+T Queue<T>::peek()
+{
+    return myQueue.peekL();
+}
+
+/**
+ * Determines if the Queue is empty.
+ *
+ * @return bool which is true if the Queue is empty, false otherwise.
+ */
+template <class T>
+bool Queue<T>::isEmpty() const
+{
+    return myQueue.isEmpty();
+}
 
 /**
  * Finds the object at the front of the Queue, and returns it to the
