@@ -68,16 +68,16 @@ vector<int> treasureMap::ten_2(int n, int digit){
 PNG treasureMap::renderMap(){
 
     PNG copy = base;
-    vector<vector<boolean>> visit(copy.width(), vector<boolean> (copy.height(), false));
+    vector<vector<bool>> visit(copy.width(), vector<boolean> (copy.height(), false));
     vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
-    queue<pair<int, int>> locations;
+    Queue<pair<int, int>> locations;
 
     visit[start.first][start.second] = true;
     distance[start.first][start.second] = 0;
     setLOB(copy, start, 0);
     locations.enqueue(start);
 
-    while(!location.isEmpty()) {
+    while(!locations.isEmpty()) {
         pair<int, int> curr = locations.peek();
         vector<pair<int,int>> neighbor = neighbors(curr);
         locations.dequeue();
@@ -85,7 +85,7 @@ PNG treasureMap::renderMap(){
             if(good(visit, curr, neighbor[i])){
                 visit[neighbor[i].first][neighbor[i].second] = true;
                 distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
-                dis = distance[neighbor[i].first][neighbor[i].second];
+                int dis = distance[neighbor[i].first][neighbor[i].second];
                 setLOB(copy, neighbor[i], dis);
                 locations.enqueue(neighbor[i]);
             }
@@ -98,15 +98,14 @@ PNG treasureMap::renderMap(){
 PNG treasureMap::renderMaze(){
 
     PNG copy = base;
-    queue<pair<int, int>> locations;
-    vector<vector<boolean>> visit(copy.width(), vector<boolean> (copy.height(), false));
-    vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
+    vector<vector<bool>> visit(copy.width(), vector<boolean> (copy.height(), false));
+    Queue<pair<int, int>> locations;
 
-    for(int i = start.first-3; i =< start.first+3; i++){
+    for(int i = start.first-3; i <= start.first+3; i++){
         if(i>=0 && i < copy.width()){
-            for(int j = start.second-3; j =< start.second+3; j++){
+            for(int j = start.second-3; j <= start.second+3; j++){
                 if(j>=0 && j < copy.height()){
-                    RGBAPixel *pixel = im.getPixel(x,y);
+                    RGBAPixel *pixel = copy.getPixel(i,j);
                     pixel->r = 255;
                     pixel->g = 0;
                     pixel->b = 0;
@@ -116,17 +115,14 @@ PNG treasureMap::renderMaze(){
     }
 
     visit[start.first][start.second] = true;
-    distance[start.first][start.second] = 0;
-    locations.enqueue(start);
 
-    while(!location.isEmpty()) {
+    while(!locations.isEmpty()) {
         pair<int, int> curr = locations.peek();
         vector<pair<int,int>> neighbor = neighbors(curr);
+        visit[curr.first][curr.second] = true;
         locations.dequeue();
         for(int i = 0; i < 4; i++){
             if(good(visit, curr, neighbor[i])){
-                visit[neighbor[i].first][neighbor[i].second] = true;
-                distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
                 setGrey(copy, neighbor[i]);
                 locations.enqueue(neighbor[i]);
             }
@@ -138,7 +134,7 @@ PNG treasureMap::renderMaze(){
 }
 
 bool treasureMap::good(vector<vector<bool>> & v, pair<int,int> curr, pair<int,int> next){
-    if(next.first > base.width() || next.second > base.height() || next.first < 0 || next.second < 0){
+    if(next.first >= base.width() || next.second >= base.height() || next.first < 0 || next.second < 0){
         return false;
     } else if (v[next.first][next.second] == true){
         return false;
