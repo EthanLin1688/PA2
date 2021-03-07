@@ -41,7 +41,7 @@ PNG treasureMap::renderMap(){
 			if(good(visit, curr, neighbor[i])){
 				visit[neighbor[i].first][neighbor[i].second] = true;
 				distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
-				setLOB(copy, neighbor[i], 0);
+				setLOB(copy, neighbor[i], distance[neighbor[i].first][neighbor[i].second]);
 				locations.enqueue(neighbor[i]);
 			}
 		}
@@ -79,7 +79,7 @@ PNG treasureMap::renderMaze(){
 			if(neighbor[i]){
 				visit[neighbor[i].first][neighbor[i].second] = true;
 				distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
-				setGrey(copy, neighbor[i], 0);
+				setGrey(copy, neighbor[i]);
 				locations.enqueue(neighbor[i]);
 			}
 		}
