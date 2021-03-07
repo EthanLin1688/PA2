@@ -23,14 +23,71 @@ void treasureMap::setLOB(PNG & im, pair<int,int> loc, int d){
 
 PNG treasureMap::renderMap(){
 
-/* YOUR CODE HERE */
+	PNG copy = base;
+	vector<vector<boolean>> visit(copy.width(), vector<boolean> (copy.height(), false));
+	vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
+	queue<pair<int, int>> locations;
 
+	visit[start.first][start.second] = true;
+	distance[start.first][start.second] = 0;
+	setLOB(copy, start, 0);
+	locations.enqueue(start);
+
+	while(!location.isEmpty()) {
+		pair<int, int> curr = locations.peek();
+		vector<pair<int,int>> neighbor = neighbors(curr);
+		locations.dequeue();
+		for(int i = 0; i < 4; i++){
+			if(good(visit, curr, neighbor[i])){
+				visit[neighbor[i].first][neighbor[i].second] = true;
+				distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
+				setLOB(copy, neighbor[i], 0);
+				locations.enqueue(neighbor[i]);
+			}
+		}
+	}
+
+	return copy;
+	
 }
 
 
 PNG treasureMap::renderMaze(){
 
-/* YOUR CODE HERE */
+	PNG copy = base;
+	queue<pair<int, int>> locations;
+
+	for(int i = start.first-3; i =< start.first+3; i++){
+		if(i>=0 && i < copy.width()){
+			for(int j = start.second-3; j =< start.second+3; j++){
+				if(j>=0 && j < copy.height()){
+					copy.getPixel(i, j)->r = 255;
+					copy.getPixel(i, j)->g = 0;
+					copy.getPixel(i, j)->b = 0;
+				}
+			}
+		}
+	}
+
+	visit[start.first][start.second] = true;
+	distance[start.first][start.second] = 0;
+	locations.enqueue(start);
+
+	while(!location.isEmpty()) {
+		pair<int, int> curr = locations.peek();
+		vector<pair<int,int>> neighbor = neighbors(curr);
+		locations.dequeue();
+		for(int i = 0; i < 4; i++){
+			if(neighbor[i]){
+				visit[neighbor[i].first][neighbor[i].second] = true;
+				distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
+				setGrey(copy, neighbor[i], 0);
+				locations.enqueue(neighbor[i]);
+			}
+		}
+	}
+
+	return copy;
 
 }
 
