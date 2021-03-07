@@ -14,13 +14,17 @@ TEST_CASE("stack::basic functions","[weight=1][part=stack]"){
     for (int i = 10; i > 0; i--) {
         expected.push_back(i);
     }
+    cout<<"1"<<endl;
     for (int i = 1; i <= 10; i++) {
         intStack.push(i);
     }
+    cout<<"2"<<endl;
     while (!intStack.isEmpty()) {
         result.push_back(intStack.pop());
     }
+    cout<<"3"<<endl;
     REQUIRE( result == expected);
+    cout<<"4"<<endl;
 }
 TEST_CASE("queue::basic functions","[weight=1][part=queue]"){
     Queue<int> intQueue;
