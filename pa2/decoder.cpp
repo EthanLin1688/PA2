@@ -12,13 +12,48 @@ decoder::decoder(const PNG & tm, pair<int,int> s)
 
 PNG decoder::renderSolution(){
 
-/* YOUR CODE HERE */
+	for(int i = 0; i < pathPts.size(); i++){
+		RGBAPixel *pixel = mapImg.getPixel(pathPts[i].first, pathPts[i].second);
+		pixel->r = 255;
+        pixel->g = 0;
+        pixel->b = 0;
+	}
 
 }
 
 PNG decoder::renderMaze(){
 
-/* YOUR CODE HERE */
+	PNG copy = mapImg;
+    queue<pair<int, int>> locations;
+
+    for(int i = start.first-3; i =< start.first+3; i++){
+        if(i>=0 && i < copy.width()){
+            for(int j = start.second-3; j =< start.second+3; j++){
+                if(j>=0 && j < copy.height()){
+                    RGBAPixel *pixel = im.getPixel(x,y);
+                    pixel->r = 255;
+                    pixel->g = 0;
+                    pixel->b = 0;
+                }
+            }
+        }
+    }
+
+    locations.enqueue(start);
+
+    while(!location.isEmpty()) {
+        pair<int, int> curr = locations.peek();
+        vector<pair<int,int>> neighbor = neighbors(curr);
+        locations.dequeue();
+        for(int i = 0; i < 4; i++){
+            if(good(visit, curr, neighbor[i])){
+                setGrey(copy, neighbor[i]);
+                locations.enqueue(neighbor[i]);
+            }
+        }
+    }
+
+    return copy;
 
 }
 
