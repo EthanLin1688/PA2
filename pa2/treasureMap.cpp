@@ -55,6 +55,8 @@ PNG treasureMap::renderMap(){
 PNG treasureMap::renderMaze(){
 
 	PNG copy = base;
+	vector<vector<boolean>> visit(copy.width(), vector<boolean> (copy.height(), false));
+	vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
 	queue<pair<int, int>> locations;
 
 	for(int i = start.first-3; i =< start.first+3; i++){
