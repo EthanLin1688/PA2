@@ -68,7 +68,7 @@ vector<int> treasureMap::ten_2(int n, int digit){
 PNG treasureMap::renderMap(){
 
     PNG copy = base;
-    vector<vector<bool>> visit(copy.width(), vector<boolean> (copy.height(), false));
+    vector<vector<bool>> visit(copy.width(), vector<bool> (copy.height(), false));
     vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
     Queue<pair<int, int>> locations;
 
@@ -98,7 +98,7 @@ PNG treasureMap::renderMap(){
 PNG treasureMap::renderMaze(){
 
     PNG copy = base;
-    vector<vector<bool>> visit(copy.width(), vector<boolean> (copy.height(), false));
+    vector<vector<bool>> visit(copy.width(), vector<bool> (copy.height(), false));
     Queue<pair<int, int>> locations;
 
     for(int i = start.first-3; i <= start.first+3; i++){
