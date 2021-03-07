@@ -40,7 +40,7 @@ T Deque<T>::popL()
 {
     
 	T result = data.at(n1);
-	n1++
+	n1++;
 
 	if((n1-n2+1) < n2){
 		vector<T> temp;
