@@ -106,7 +106,10 @@ PNG treasureMap::renderMaze(){
         if(i>=0 && i < copy.width()){
             for(int j = start.second-3; j =< start.second+3; j++){
                 if(j>=0 && j < copy.height()){
-                    copy.getPixel(i, j) = new RGBAPixel(255, 0, 0);
+                    RGBAPixel *pixel = im.getPixel(x,y);
+                    pixel->r = 255;
+                    pixel->g = 0;
+                    pixel->b = 0;
                 }
             }
         }
