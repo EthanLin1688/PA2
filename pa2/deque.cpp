@@ -9,7 +9,6 @@ Deque<T>::Deque(){
 
 	n1 = 0;
 	n2 = 0;
-	data = new vector<T>;
 
 }
 
@@ -43,7 +42,7 @@ T Deque<T>::popL()
 	T result = data.at(n1);
 	n1++
 
-	if(){
+	if((n1-n2+1) < n2){
 		vector<T> temp;
 		for(int i = n1; i < n2; i++){
 			temp.push_back(data.at(i));
