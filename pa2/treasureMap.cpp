@@ -61,9 +61,7 @@ PNG treasureMap::renderMaze(){
 		if(i>=0 && i < copy.width()){
 			for(int j = start.second-3; j =< start.second+3; j++){
 				if(j>=0 && j < copy.height()){
-					copy.getPixel(i, j)->r = 255;
-					copy.getPixel(i, j)->g = 0;
-					copy.getPixel(i, j)->b = 0;
+					copy.getPixel(i, j) = new RGBAPixel(255, 0, 0);
 				}
 			}
 		}
