@@ -8,7 +8,7 @@ template <class T>
 Deque<T>::Deque(){
 
 	n1 = 0;
-	n2 = 0;
+	n2 = -1;
 
 }
 
@@ -22,7 +22,6 @@ void Deque<T>::pushR(T newItem)
 {
 
 	data.push_back(newItem);
-
     n2++;
 
 }
@@ -50,7 +49,6 @@ T Deque<T>::popL()
 		data = temp;
 		n2 = n2 - n1;
 		n1 = 0;
-
 	}
 
 	return result;
@@ -68,6 +66,17 @@ T Deque<T>::popR()
     T result = data.at(n2);
     n2--;
     data.pop_back();
+
+    if((n1-n2+1) < n2){
+		vector<T> temp;
+		for(int i = n1; i < n2; i++){
+			temp.push_back(data.at(i));
+		}
+		data = temp;
+		n2 = n2 - n1;
+		n1 = 0;
+	}
+    
     return result;
 }
 
