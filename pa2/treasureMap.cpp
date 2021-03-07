@@ -124,7 +124,7 @@ PNG treasureMap::renderMaze(){
         vector<pair<int,int>> neighbor = neighbors(curr);
         locations.dequeue();
         for(int i = 0; i < 4; i++){
-            if(neighbor[i]){
+            if(good(visit, curr, neighbor[i])){
                 visit[neighbor[i].first][neighbor[i].second] = true;
                 distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
                 setGrey(copy, neighbor[i]);
