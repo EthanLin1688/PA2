@@ -135,7 +135,7 @@ PNG treasureMap::renderMaze(){
 }
 
 bool treasureMap::good(vector<vector<bool>> & v, pair<int,int> curr, pair<int,int> next){
-    if(next.first > base.width() || next.second > base.height() || next.first < 0 || next.second < 0){
+    if(next.first >= base.width() || next.second >= base.height() || next.first < 0 || next.second < 0){
         return false;
     } else if (v[next.first][next.second] == true){
         return false;
