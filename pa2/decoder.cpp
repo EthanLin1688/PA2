@@ -25,13 +25,15 @@ PNG decoder::renderSolution(){
 PNG decoder::renderMaze(){
 
     PNG copy = mapImg;
-    queue<pair<int, int>> locations;
+    vector<vector<bool>> visit(copy.width(), vector<bool> (copy.height(), false));
+    vector<vector<int>> distance(copy.width(), vector<int> (copy.height()));
+    Queue<pair<int, int>> locations;
 
-    for(int i = start.first-3; i =< start.first+3; i++){
+    for(int i = start.first-3; i <= start.first+3; i++){
         if(i>=0 && i < copy.width()){
-            for(int j = start.second-3; j =< start.second+3; j++){
+            for(int j = start.second-3; j <= start.second+3; j++){
                 if(j>=0 && j < copy.height()){
-                    RGBAPixel *pixel = im.getPixel(x,y);
+                    RGBAPixel *pixel = copy.getPixel(x,y);
                     pixel->r = 255;
                     pixel->g = 0;
                     pixel->b = 0;
@@ -41,10 +43,13 @@ PNG decoder::renderMaze(){
     }
 
     locations.enqueue(start);
+    visit[start.first][start.second] = true;
+    distance[start.first][start.second] = 0;
 
-    while(!location.isEmpty()) {
+    while(!locations.isEmpty()) {
         pair<int, int> curr = locations.peek();
         vector<pair<int,int>> neighbor = neighbors(curr);
+        visit[curr.first][curr.second] = true;
         locations.dequeue();
         for(int i = 0; i < 4; i++){
             if(good(visit, curr, neighbor[i])){
@@ -78,13 +83,13 @@ int decoder::pathLength(){
 }
 
 bool decoder::good(vector<vector<bool>> & v, vector<vector<int>> & d, pair<int,int> curr, pair<int,int> next){
-    if(next.first >= base.width() || next.second >= base.height() || next.first < 0 || next.second < 0){
+    if(next.first >= mapImg.width() || next.second >= mapImg.height() || next.first < 0 || next.second < 0){
         return false;
     } else if (v[next.first][next.second] == true){
         return false;
     } else {
         RGBAPixel *p_next = maze.getPixel(next.first,next.second);
-        dis = d[curr.second][curr.first];
+        int dis = d[curr.second][curr.first];
         return compare(p_next, dis);
     }
 }
