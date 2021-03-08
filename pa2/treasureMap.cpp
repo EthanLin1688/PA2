@@ -1,5 +1,6 @@
 #include "treasureMap.h"
 #include "queue.h"
+#include <cmath>
 using namespace std;
 
 treasureMap::treasureMap(const PNG & baseim, const PNG & mazeim, pair<int,int> s)
@@ -114,7 +115,6 @@ PNG treasureMap::renderMaze(){
         }
     }
 
-    locations.enqueue(start);
     visit[start.first][start.second] = true;
 
     while(!locations.isEmpty()) {
@@ -143,7 +143,7 @@ bool treasureMap::good(vector<vector<bool>> & v, pair<int,int> curr, pair<int,in
         RGBAPixel *p_curr = maze.getPixel(curr.first,curr.second);
         RGBAPixel *p_next = maze.getPixel(next.first,next.second);
 
-        return (p_curr->a == p_next->a) && (p_curr->g == p_next->g) && (p_curr->b == p_next->b);
+        return (p_curr->r == p_next->r) && (p_curr->g == p_next->g) && (p_curr->b == p_next->b);
     }
 }
 
@@ -158,4 +158,5 @@ vector<pair<int,int>> treasureMap::neighbors(pair<int,int> curr) {
 
     return n;
 }
+
 
