@@ -113,9 +113,9 @@ private:
 
     void setLOB(PNG & im, pair<int,int> loc, int d);
 
-    vector<int> treasureMap::ten_2(int n, int digit);
+    vector<int> ten_2(int n, int digit);
 
-    int treasureMap::two_10(vector<int> a);
+    int two_10(vector<int> a);
 
     // changes the pixel at position loc to consist of colour channel
     // values which are 50% of their original. Note that because of
