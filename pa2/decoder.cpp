@@ -2,6 +2,7 @@
 #include "queue.h"
 #include "stack.h"
 #include "treasureMap.h"
+#include <cmath>
 using namespace std;
 
 decoder::decoder(const PNG & tm, pair<int,int> s)
