@@ -33,7 +33,7 @@ PNG decoder::renderMaze(){
         if(i>=0 && i < copy.width()){
             for(int j = start.second-3; j <= start.second+3; j++){
                 if(j>=0 && j < copy.height()){
-                    RGBAPixel *pixel = copy.getPixel(x,y);
+                    RGBAPixel *pixel = copy.getPixel(i,j);
                     pixel->r = 255;
                     pixel->g = 0;
                     pixel->b = 0;
@@ -52,7 +52,7 @@ PNG decoder::renderMaze(){
         visit[curr.first][curr.second] = true;
         locations.dequeue();
         for(int i = 0; i < 4; i++){
-            if(good(visit, curr, neighbor[i])){
+            if(good(visit, distance, curr, neighbor[i])){
                 setGrey(copy, neighbor[i]);
                 locations.enqueue(neighbor[i]);
             }
@@ -88,7 +88,7 @@ bool decoder::good(vector<vector<bool>> & v, vector<vector<int>> & d, pair<int,i
     } else if (v[next.first][next.second] == true){
         return false;
     } else {
-        RGBAPixel *p_next = maze.getPixel(next.first,next.second);
+        RGBAPixel *p_next = mapImg.getPixel(next.first,next.second);
         int dis = d[curr.second][curr.first];
         return compare(p_next, dis);
     }
@@ -109,10 +109,10 @@ vector<pair<int,int>> decoder::neighbors(pair<int,int> curr) {
 }
 
 
-bool decoder::compare(RGBAPixel p, int d){
-    vector<int> bin_r = treasureMap.ten_2(p.r,6);
-    vector<int> bin_g = treasureMap.ten_2(p.g,6);
-    vector<int> bin_b = treasureMap.ten_2(p.b,6);
+bool decoder::compare(RGBAPixel *p, int d){
+    vector<int> bin_r = ten_2(p->r,6);
+    vector<int> bin_g = ten_2(p->g,6);
+    vector<int> bin_b = ten_2(p->b,6);
 
     vector<int> final;
     final.push_back(bin_r[4]);
@@ -122,10 +122,35 @@ bool decoder::compare(RGBAPixel p, int d){
     final.push_back(bin_b[4]);
     final.push_back(bin_b[5]);
 
-    int final_i = treasureMap.two_10(final);
+    int final_i = two_10(final);
     if(final_i == 0 && d == 63){
         return true;
     }else{
         return(final_i == d+1);
     }
+}
+
+int decoder::two_10(vector<int> a){
+    int b = 0;
+    for(int i= 0;i<a.size();i++){
+        b += (pow(2,a.size()-i-1))*a[i];
+    }
+    return b;
+}
+
+vector<int> decoder::ten_2(int n, int digit){
+    vector<int> a;
+    vector<int> result;
+
+    while(n)
+    {
+        a.push_back(n%2);
+        n/=2;
+    }
+    while(a.size()<digit){
+        a.push_back(0);
+    }
+    for(int i=a.size()-1;i>=0;i--)
+        result.push_back(a[i]);
+    return result;
 }
