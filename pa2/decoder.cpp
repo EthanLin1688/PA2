@@ -7,7 +7,42 @@ using namespace std;
 decoder::decoder(const PNG & tm, pair<int,int> s)
    :start(s),mapImg(tm) {
 
-/* YOUR CODE HERE */
+    vector<vector<bool>> visit(mapImg.width(), vector<bool> (mapImg.height(), false));
+    vector<vector<int>> distance(mapImg.width(), vector<int> (mapImg.height(), 0));
+    vector<vector<pair<int, int>>> prev(mapImg.width(), vector<pair<int, int>> (mapImg.height()));
+    int max = 0;
+    pair<int, int> treasure;
+    Queue<pair<int, int>> locations;
+
+    locations.enqueue(start);
+    visit[start.first][start.second] = true;
+    distance[start.first][start.second] = 0;
+
+    while(!locations.isEmpty()) {
+        pair<int, int> curr = locations.peek();
+        vector<pair<int,int>> neighbor = neighbors(curr);
+        visit[curr.first][curr.second] = true;
+        locations.dequeue();
+        for(int i = 0; i < 4; i++){
+            if(good(visit, distance, curr, neighbor[i])){
+                distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
+                if(distance[curr.first][curr.second] > max){
+                    max = distance[curr.first][curr.second];
+                    treasure = neighbor[i];
+                }
+                prev[neighbor[i].first][neighbor[i].second] = curr;
+                locations.enqueue(neighbor[i]);
+            }
+        }
+    }
+
+    pathPts.push_back(treasure);
+    pair<int, int> curr = treasure;
+
+    while(curr != start){
+        curr = prev[curr.first][curr.second];
+        pathPts.insert(pathPts.begin(), prev[curr.first][curr.second]);
+    }
     
 }
 
@@ -54,6 +89,7 @@ PNG decoder::renderMaze(){
         for(int i = 0; i < 4; i++){
             if(good(visit, distance, curr, neighbor[i])){
                 setGrey(copy, neighbor[i]);
+                distance[neighbor[i].first][neighbor[i].second] = distance[curr.first][curr.second] + 1;
                 locations.enqueue(neighbor[i]);
             }
         }
